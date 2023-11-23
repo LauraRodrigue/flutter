@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,7 +14,181 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: "Card app",
       theme: ThemeData(
-        primaryColor: Colors.black87, // Cambia este color según tus preferencias
+        backgroundColor: Colors.black87,
+      ),
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text("Form Demo"),
+        ),
+        body: Distribucion(),
+      ),
+    );
+  }
+}
+
+class Distribucion extends StatelessWidget {
+  const Distribucion({Key? key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+      home: TextFormFieldExample(),
+    );
+  }
+}
+
+class TextFormFieldExample extends StatefulWidget {
+  const TextFormFieldExample({Key? key}) : super(key: key);
+
+  @override
+  State<TextFormFieldExample> createState() => _TextFormFieldExampleState();
+}
+
+class _TextFormFieldExampleState extends State<TextFormFieldExample> {
+  final _formKey = GlobalKey<FormState>();
+  TextEditingController _cedulaController = TextEditingController();
+  TextEditingController _nombreController = TextEditingController();
+  TextEditingController _usuarioController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+  TextEditingController _telefonoController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      child: Center(
+        child: Shortcuts(
+          shortcuts: const <ShortcutActivator, Intent>{
+            SingleActivator(LogicalKeyboardKey.space): NextFocusIntent(),
+          },
+          child: FocusTraversalGroup(
+            child: Center(
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    TextFormField(
+                      controller: _cedulaController,
+                      decoration: const InputDecoration(
+                        icon: Icon(Icons.credit_card),
+                        hintText: 'Ingrese su numero de documento',
+                        labelText: 'Cédula *',
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Ingrese su numero de documento';
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      controller: _nombreController,
+                      decoration: const InputDecoration(
+                        icon: Icon(Icons.person),
+                        hintText: 'Ingrese su nombre',
+                        labelText: 'Nombre*',
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Ingrese su nombre';
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      controller: _usuarioController,
+                      decoration: const InputDecoration(
+                        icon: Icon(Icons.account_circle),
+                        hintText: 'Ingrese un nombre para su usario',
+                        labelText: 'Usuario*',
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Ingrese un nombre de usuario';
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      controller: _passwordController,
+                      obscureText: true,
+                      decoration: const InputDecoration(
+                        icon: Icon(Icons.lock),
+                        hintText: 'Ingrese su contraseña',
+                        labelText: 'Contraseña*',
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Ingrese una contraseña';
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      controller: _telefonoController,
+                      decoration: const InputDecoration(
+                        icon: Icon(Icons.phone),
+                        hintText: 'Ingrese su numero de telefono',
+                        labelText: 'Telefono*',
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Ingrese su numero de telefono';
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(height: 16),
+                    ElevatedButton(
+                      onPressed: () {
+                        if (_formKey.currentState?.validate() ?? false) {
+                          // Todas las validaciones pasaron
+                          // Puedes acceder a los valores utilizando los controladores
+                          print('Cédula: ${_cedulaController.text}');
+                          print('Nombre: ${_nombreController.text}');
+                          print('Usuario: ${_usuarioController.text}');
+                          print('Contraseña: ${_passwordController.text}');
+                          print('Telefono: ${_telefonoController.text}');
+
+                          // Agrega lógica adicional según sea necesario
+                        }
+                      },
+                      child: const Text('Ingresar'),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+
+
+
+
+
+
+/* import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: "Card app",
+      theme: ThemeData(
+        scaffoldBackgroundColor:
+            Colors.black87, // Cambia este color según tus preferencias
       ),
       home: Scaffold(
         appBar: AppBar(
@@ -33,102 +208,119 @@ class Distribucion extends StatelessWidget {
     return Container(
       color: Colors.white,
       child: Center(
-       child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-        child: Container(
-          height: 120,
-          width: 380,
-          color: Colors.orange, // Cambia este color según tus preferencias
-          child:const Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Text("🎞️"),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(
-                      left: 23.0,
-                    ),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text("Photo Album",
-                          style: TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.w500,
-                            decoration: TextDecoration.none,
-                            color: Colors.white,
-                          ),
-                          ),
-                          Text("TWICE",
-                          style: TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.w500,
-                            decoration: TextDecoration.none,
-                            color: Colors.white,
-                          ),
-                          ),
-                        ]),
+          child: Column(
+        children: [
+          Container(
+            margin:const EdgeInsets.all(16.0),
+            child: Card(
+              color: Colors.orange,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  const ListTile(
+                    leading: Icon(Icons.photo_album),
+                    title: Text("Photo Album"),
+                    subtitle: Text('"TWICE"'),
                   ),
                   Row(
-                     mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(
-                          top: 10.0,
-                          left: 70.0,
-                          right: 30.0,
-                        ),
-                        child: Text(
-                          "Edit",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      TextButton(
+                        child: const Text('Edit'),
+                        onPressed: () {/* ... */},
                       ),
-                      Padding(
-                        padding: EdgeInsets.only(
-                          top: 10.0,
-                          right: 30.0,
-                        ),
-                        child: Text(
-                          "Create",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
+                      const SizedBox(width: 8),
+                      TextButton(
+                        child: const Text('Create'),
+                        onPressed: () {/* ... */},
                       ),
-                       Padding(
-                        padding: EdgeInsets.only(
-                          top: 10.0,
-                        ),
-                        child: Text(
-                          "Delete",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
+                      TextButton(
+                        child: const Text('Delete'),
+                        onPressed: () {/* ... */},
                       ),
+                      const SizedBox(width: 8),
                     ],
-                  )
+                  ),
                 ],
-              )
-            ],
+              ),
+            ),
           ),
-        ),
-       ),
-      ),
+          Container(
+            margin:const EdgeInsets.all(16.0),
+            child: Card(
+              color: Colors.green,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  const ListTile(
+                    leading: Icon(Icons.access_time),
+                    title: Text("Time"),
+                    subtitle: Text('"TWICE"'),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      TextButton(
+                        child: const Text('Edit'),
+                        onPressed: () {/* ... */},
+                      ),
+                      const SizedBox(width: 8),
+                      TextButton(
+                        child: const Text('Create'),
+                        onPressed: () {/* ... */},
+                      ),
+                      TextButton(
+                        child: const Text('Delete'),
+                        onPressed: () {/* ... */},
+                      ),
+                      const SizedBox(width: 8),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Container(
+            margin:const EdgeInsets.all(16.0),
+            child: Card(
+              color: Colors.pink,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  const ListTile(
+                    leading: Icon(Icons.person),
+                    title: Text("Access"),
+                    subtitle: Text('"TWICE"'),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      TextButton(
+                        child: const Text('Edit'),
+                        onPressed: () {/* ... */},
+                      ),
+                      const SizedBox(width: 8),
+                      TextButton(
+                        child: const Text('Create'),
+                        onPressed: () {/* ... */},
+                      ),
+                      TextButton(
+                        child: const Text('Delete'),
+                        onPressed: () {/* ... */},
+                      ),
+                      const SizedBox(width: 8),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      )),
     );
   }
 }
+ */
 
 
 
