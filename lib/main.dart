@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+/* import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 void main() {
@@ -165,12 +165,7 @@ class _TextFormFieldExampleState extends State<TextFormFieldExample> {
     );
   }
 }
-
-
-
-
-
-
+ */
 
 /* import 'package:flutter/material.dart';
 
@@ -322,11 +317,6 @@ class Distribucion extends StatelessWidget {
 }
  */
 
-
-
-
-
-
 /* import 'package:flutter/material.dart';
 
 void main() {
@@ -440,126 +430,139 @@ class Distribucion extends StatelessWidget {
   }
 } */
 
-
-
-
-
-
-
-
-/* import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 void main() {
-  runApp(const MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: Scaffold(
-      body: MyApp(),
-    ),
-  ));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: const LoginPage(),
+    );
+  }
+}
+
+class LoginPage extends StatelessWidget {
+  const LoginPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final TextEditingController usuarioController = TextEditingController();
+    final TextEditingController contrasenaController = TextEditingController();
+
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Registro'),
+        backgroundColor: Color.fromARGB(255, 251, 130, 178),
+      ),
       body: Container(
-        decoration:const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              Color.fromARGB(255, 219, 51, 238),
-              Color.fromARGB(255, 2, 143, 251),
+              Color.fromARGB(255, 251, 130, 178),
+              Color.fromRGBO(1, 212, 236, 0.718),
             ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.only(top: 180.0),
-          child: Center(
-            child: Column(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(50),
-                  child: Image.asset(
-                    "assets/cuatro.png",
-                    width: 100,
-                    height: 100,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                    top: 30.0,
-                    left: 18.0,
-                    right: 18.0,
-                    bottom: 16.0,
-                  ),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      labelText: '👤Usuario',
-                      labelStyle:const TextStyle(
-                        color: Colors.black87,
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Column(
+                children: [
+                  Container(
+                    width: 130.0,
+                    height: 130.0,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                        image: AssetImage('assets/tres.png'),
+                        fit: BoxFit.cover,
                       ),
-                      contentPadding:const EdgeInsets.all(10.0),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(16.0),
-                      ),
-                      filled: true,
-                      fillColor: Colors.grey[200],
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                    top: 10.0,
-                    left: 16.0,
-                    right: 16.0,
-                    bottom: 16.0,
-                  ),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      labelText: '🔒 Contraseña',
-                      labelStyle:const TextStyle(
-                        color: Colors.black87,
-                      ),
-                      contentPadding:const EdgeInsets.all(10.0),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
-                      filled: true,
-                      fillColor: Colors.grey[200],
-                    ),
-                  ),
-                ),
-                TextButton(
-                  onPressed: () {
-                    print('Boton presionado');
-                  },
-                  style: TextButton.styleFrom(
-                    padding:const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                    backgroundColor: Color.fromARGB(255, 2, 251, 131),
-                  ),
-                  child:const Text(
-                    "➡ Ingresar",
-                    style: TextStyle(
+                  const SizedBox(height: 16.0),
+                  Container(
+                    decoration: BoxDecoration(
                       color: Colors.white,
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: TextField(
+                      controller: usuarioController,
+                      decoration: InputDecoration(
+                        labelText: '👤  Usuario',
+                        labelStyle: TextStyle(color: Colors.black),
+                        border: InputBorder.none,
+                      ),
                     ),
                   ),
-                ),
-                const Text("*Olvide mi contraseña*",
-                style: TextStyle(
-                  color: Colors.white
-                ),
-                )
-              ],
-            ),
+                  const SizedBox(height: 16.0),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: TextField(
+                      controller: contrasenaController,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        labelText: '🔐  Contraseña',
+                        labelStyle: TextStyle(color: Colors.black),
+                        border: InputBorder.none,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16.0),
+                  ElevatedButton(
+                    onPressed: () async {
+                      try {
+                        var headers = {'Content-Type': 'application/json'};
+                        var request = http.Request(
+                          'POST',
+                          Uri.parse('http://10.0.2.2:5500/api/vendedor/login'),
+                        );
+                        request.body = json.encode({
+                          "usuario": usuarioController.text,
+                          "contrasena": contrasenaController.text,
+                        });
+                        request.headers.addAll(headers);
+
+                        http.StreamedResponse response = await request.send();
+
+                        if (response.statusCode == 200) {
+                          print(await response.stream.bytesToString());
+                        } else {
+                          print(response.reasonPhrase);
+                        }
+                      } catch (error) {
+                        print('Error en la solicitud HTTP: $error');
+                      }
+                    },
+                    child: const Text('Iniciar sesión',
+                        style: TextStyle(fontSize: 20.0)),
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
       ),
     );
   }
-} */
+}
 
 
 /*  import 'package:flutter/material.dart';  
